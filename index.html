@@ -1,0 +1,1251 @@
+<!DOCTYPE html>
+<html lang="it" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Il Nobile Corano — DA MUHAMMAD HAMMAD</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts: Amiri & Scheherazade New per l'Arabo, Inter & Cinzel per l'Italiano -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Cinzel:wght@600;700&family=Inter:wght@300;400;500;600;700&family=Scheherazade+New:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome per icone -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Configurazione Tailwind personalizzata -->
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        serif: ['Cinzel', 'serif'],
+                        arabic: ['Amiri', 'Scheherazade New', 'serif'],
+                    },
+                    colors: {
+                        emerald: {
+                            850: '#064e3b',
+                            900: '#043927',
+                            950: '#022419',
+                        },
+                        gold: {
+                            300: '#fde047',
+                            400: '#d4af37',
+                            500: '#c59b27',
+                            600: '#a17c1a',
+                        },
+                        parchment: {
+                            50: '#fdfbf7',
+                            100: '#f7f3e8',
+                            200: '#efe7d2',
+                            800: '#1c2421',
+                            900: '#111715',
+                            950: '#0a0e0c',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Pattern geometrico islamico sottile per gli sfondi */
+        .islamic-pattern {
+            background-image: radial-gradient(rgba(212, 175, 55, 0.12) 1px, transparent 1px), 
+                              radial-gradient(rgba(212, 175, 55, 0.12) 1px, transparent 1px);
+            background-size: 32px 32px;
+            background-position: 0 0, 16px 16px;
+        }
+
+        .dark .islamic-pattern {
+            background-image: radial-gradient(rgba(212, 175, 55, 0.07) 1px, transparent 1px), 
+                              radial-gradient(rgba(212, 175, 55, 0.07) 1px, transparent 1px);
+        }
+
+        /* Scrollbar personalizzata elegante */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(212, 175, 55, 0.4);
+            border-radius: 9999px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(212, 175, 55, 0.7);
+        }
+
+        /* Stile del numero versetto in arabo */
+        .ayah-end-symbol {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 2.1rem;
+            height: 2.1rem;
+            margin: 0 0.4rem;
+            font-size: 0.95rem;
+            font-family: 'Amiri', serif;
+            color: #c59b27;
+            border: 1.5px solid #c59b27;
+            border-radius: 9999px;
+            vertical-align: middle;
+            position: relative;
+        }
+        
+        .dark .ayah-end-symbol {
+            color: #d4af37;
+            border-color: #d4af37;
+        }
+
+        /* Animazione onda audio */
+        @keyframes soundwave {
+            0%, 100% { height: 4px; }
+            50% { height: 16px; }
+        }
+        .animate-wave-1 { animation: soundwave 0.8s infinite ease-in-out; }
+        .animate-wave-2 { animation: soundwave 0.8s infinite ease-in-out 0.2s; }
+        .animate-wave-3 { animation: soundwave 0.8s infinite ease-in-out 0.4s; }
+    </style>
+</head>
+<body class="bg-parchment-50 text-stone-800 dark:bg-parchment-950 dark:text-stone-200 transition-colors duration-300 font-sans antialiased selection:bg-gold-500/30 selection:text-emerald-900 dark:selection:text-gold-300">
+
+    <!-- Notifica Toast personalizzata (sostituisce alert) -->
+    <div id="toast-container" class="fixed top-20 right-4 z-50 flex flex-col gap-2 pointer-events-none"></div>
+
+    <!-- Layout Principale -->
+    <div class="flex h-screen overflow-hidden">
+
+        <!-- Overlay Mobile per Sidebar -->
+        <div id="sidebar-overlay" onclick="toggleSidebar()" class="fixed inset-0 bg-black/60 backdrop-blur-xs z-30 hidden lg:hidden transition-opacity"></div>
+
+        <!-- SIDEBAR SINISTRA: Elenco delle 114 Sure e Segnalibri -->
+        <aside id="sidebar" class="fixed lg:static inset-y-0 left-0 z-40 w-80 bg-emerald-900 dark:bg-parchment-900 text-parchment-50 border-r border-gold-500/30 flex flex-col transform -translate-x-full lg:translate-x-0 transition-transform duration-300 ease-in-out shadow-2xl lg:shadow-none">
+            
+            <!-- Intestazione Sidebar -->
+            <div class="p-5 border-b border-gold-500/20 flex items-center justify-between bg-emerald-950/60 dark:bg-black/20">
+                <div class="flex items-center gap-3">
+                    <!-- Icona Stella Ottagonale Islamica SVG -->
+                    <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-gold-400 to-gold-600 flex items-center justify-center text-emerald-950 shadow-lg">
+                        <svg class="w-6 h-6" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M12 1L15.09 4.09H19.91V8.91L23 12L19.91 15.09V19.91H15.09L12 23L8.91 19.91H4.09V15.09L1 12L4.09 8.91V4.09H8.91L12 1ZM12 4.5L9.8 6.7H6.7V9.8L4.5 12L6.7 14.2V17.3H9.8L12 19.5L14.2 17.3H17.3V14.2L19.5 12L17.3 9.8V6.7H14.2L12 4.5Z"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <h1 class="font-serif font-bold text-lg tracking-wide text-gold-400">AL-QUR'AN</h1>
+                        <p class="text-xs text-parchment-200/70">Lettura & Studio</p>
+                    </div>
+                </div>
+                <button onclick="toggleSidebar()" class="lg:hidden p-2 rounded-lg text-parchment-200 hover:bg-white/10">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+
+            <!-- Tab Navigazione Sidebar: Sure vs Segnalibri -->
+            <div class="grid grid-cols-2 p-2 gap-1 bg-emerald-950/40 dark:bg-black/30 border-b border-gold-500/20">
+                <button id="tab-surahs" onclick="switchSidebarTab('surahs')" class="py-2 px-3 rounded-lg text-sm font-medium bg-gold-500 text-emerald-950 shadow-sm transition-all flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-book-quran"></i>
+                    <span>114 Sure</span>
+                </button>
+                <button id="tab-bookmarks" onclick="switchSidebarTab('bookmarks')" class="py-2 px-3 rounded-lg text-sm font-medium text-parchment-200 hover:bg-white/10 transition-all flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-bookmark"></i>
+                    <span>Segnalibri</span>
+                    <span id="bookmark-count" class="text-xs bg-emerald-800 dark:bg-parchment-800 text-gold-400 px-1.5 py-0.5 rounded-full">0</span>
+                </button>
+            </div>
+
+            <!-- Barra di Ricerca (visibile solo nel tab Sure) -->
+            <div id="search-container" class="p-3 border-b border-gold-500/15">
+                <div class="relative">
+                    <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-gold-400/70 text-sm"></i>
+                    <input type="text" id="surah-search" oninput="filterSurahs(this.value)" placeholder="Cerca Sura (es. Fatiha, 36, Yasin)..." 
+                        class="w-full bg-emerald-950/70 dark:bg-parchment-950 border border-gold-500/30 rounded-xl pl-9 pr-4 py-2 text-sm text-parchment-50 placeholder-parchment-200/50 focus:outline-none focus:border-gold-400 transition-colors">
+                </div>
+            </div>
+
+            <!-- Lista delle Sure -->
+            <div id="surah-list" class="flex-1 overflow-y-auto p-2 space-y-1">
+                <!-- Popolato dinamicamente via JS -->
+            </div>
+
+            <!-- Lista dei Segnalibri (nascosta di default) -->
+            <div id="bookmarks-list" class="flex-1 overflow-y-auto p-3 space-y-2 hidden">
+                <!-- Popolato dinamicamente via JS -->
+            </div>
+
+            <!-- Footer Sidebar -->
+            <div class="p-3 border-t border-gold-500/20 text-center text-xs text-parchment-200/60 bg-emerald-950/40 dark:bg-black/20">
+                Traduzione: <span class="text-gold-400">H. R. Piccardo</span> • Audio: <span class="text-gold-400">Alafasy</span>
+            </div>
+        </aside>
+
+        <!-- AREA PRINCIPALE DESTRA -->
+        <div class="flex-1 flex flex-col h-screen overflow-hidden relative islamic-pattern">
+            
+            <!-- HEADER SUPERIORE: Controlli, Font Size, Dark Mode -->
+            <header class="h-16 bg-white/90 dark:bg-parchment-900/90 backdrop-blur-md border-b border-gold-500/25 px-4 lg:px-8 flex items-center justify-between z-20 shadow-xs">
+                <div class="flex items-center gap-3">
+                    <button onclick="toggleSidebar()" class="lg:hidden p-2.5 rounded-xl bg-emerald-900 text-gold-400 hover:bg-emerald-800 transition-colors">
+                        <i class="fa-solid fa-bars"></i>
+                    </button>
+                    
+                    <div class="flex items-center gap-2">
+                        <span id="header-surah-badge" class="px-2.5 py-1 rounded-lg bg-emerald-900/10 dark:bg-gold-500/15 text-emerald-900 dark:text-gold-400 font-bold text-xs border border-emerald-900/20 dark:border-gold-500/30">
+                            Sura 1
+                        </span>
+                        <h2 id="header-surah-title" class="font-semibold text-base sm:text-lg text-emerald-950 dark:text-parchment-50 truncate max-w-[160px] sm:max-w-xs">
+                            Al-Fatiha
+                        </h2>
+                    </div>
+                </div>
+
+                <!-- Controlli Lettura -->
+                <div class="flex items-center gap-2 sm:gap-3">
+                    <!-- Controllo Dimensione Testo Arabo -->
+                    <div class="hidden sm:flex items-center bg-parchment-100 dark:bg-parchment-800 rounded-xl p-1 border border-gold-500/25" title="Dimensione testo arabo">
+                        <button onclick="changeFontSize(-2)" class="w-8 h-8 rounded-lg hover:bg-white dark:hover:bg-parchment-700 flex items-center justify-center text-stone-700 dark:text-stone-300 transition-colors" aria-label="Riduci testo">
+                            <i class="fa-solid fa-minus text-xs"></i>
+                        </button>
+                        <span class="px-2 text-xs font-semibold text-emerald-900 dark:text-gold-400 font-arabic">ع</span>
+                        <button onclick="changeFontSize(2)" class="w-8 h-8 rounded-lg hover:bg-white dark:hover:bg-parchment-700 flex items-center justify-center text-stone-700 dark:text-stone-300 transition-colors" aria-label="Ingrandisci testo">
+                            <i class="fa-solid fa-plus text-xs"></i>
+                        </button>
+                    </div>
+
+                    <!-- Pulsante Riproduci Intera Sura -->
+                    <button id="play-surah-btn" onclick="togglePlayFullSurah()" class="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-emerald-900 hover:bg-emerald-800 dark:bg-gold-500 dark:hover:bg-gold-400 text-parchment-50 dark:text-emerald-950 font-medium text-sm shadow-sm transition-all">
+                        <i id="play-surah-icon" class="fa-solid fa-play"></i>
+                        <span class="hidden md:inline" id="play-surah-text">Ascolta Sura</span>
+                    </button>
+
+                    <!-- Toggle Dark Mode -->
+                    <button onclick="toggleDarkMode()" class="p-2.5 rounded-xl bg-parchment-100 dark:bg-parchment-800 text-emerald-900 dark:text-gold-400 border border-gold-500/25 hover:border-gold-500 transition-all" title="Cambia tema Giorno/Notte">
+                        <i id="theme-icon" class="fa-solid fa-moon"></i>
+                    </button>
+                </div>
+            </header>
+
+            <!-- Barra Controllo Font Mobile (visibile solo su schermi piccoli) -->
+            <div class="sm:hidden flex items-center justify-between px-4 py-2 bg-parchment-100/80 dark:bg-parchment-900/80 border-b border-gold-500/15 text-xs">
+                <span id="offline-indicator-mobile" class="text-stone-500 dark:text-stone-400 flex items-center gap-1.5">
+                    <span class="w-2 h-2 rounded-full bg-emerald-500"></span> Online
+                </span>
+                <div class="flex items-center gap-2">
+                    <span class="text-stone-500 dark:text-stone-400">Testo Arabo:</span>
+                    <button onclick="changeFontSize(-2)" class="px-2.5 py-1 rounded-md bg-white dark:bg-parchment-800 border border-gold-500/20">A-</button>
+                    <button onclick="changeFontSize(2)" class="px-2.5 py-1 rounded-md bg-white dark:bg-parchment-800 border border-gold-500/20">A+</button>
+                </div>
+            </div>
+
+            <!-- CONTENITORE PRINCIPALE VERSI (SCROLLABILE) -->
+            <main id="verses-scroll-container" class="flex-1 overflow-y-auto px-4 sm:px-8 lg:px-16 py-8 pb-32">
+                <div class="max-w-4xl mx-auto">
+                    
+                    <!-- Banner Intestazione Sura (Cartiglio Decorativo) -->
+                    <div id="surah-banner" class="relative mb-8 rounded-2xl bg-gradient-to-br from-emerald-900 via-emerald-850 to-emerald-950 dark:from-parchment-900 dark:via-parchment-800 dark:to-parchment-900 text-parchment-50 p-6 sm:p-8 border-2 border-gold-500/40 shadow-xl overflow-hidden text-center">
+                        <!-- Decorazioni angolari -->
+                        <div class="absolute top-2 left-2 w-8 h-8 border-t-2 border-l-2 border-gold-400/50 rounded-tl-lg"></div>
+                        <div class="absolute top-2 right-2 w-8 h-8 border-t-2 border-r-2 border-gold-400/50 rounded-tr-lg"></div>
+                        <div class="absolute bottom-2 left-2 w-8 h-8 border-b-2 border-l-2 border-gold-400/50 rounded-bl-lg"></div>
+                        <div class="absolute bottom-2 right-2 w-8 h-8 border-b-2 border-r-2 border-gold-400/50 rounded-br-lg"></div>
+
+                        <div id="data-source-badge" class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-black/30 text-gold-300 text-xs mb-3 border border-gold-500/20">
+                            <i class="fa-solid fa-cloud"></i>
+                            <span>AlQuran Cloud API</span>
+                        </div>
+
+                        <h1 id="banner-arabic-name" class="font-arabic text-4xl sm:text-5xl text-gold-400 mb-2 drop-shadow-sm" dir="rtl">
+                            سُورَةُ ٱلْفَاتِحَةِ
+                        </h1>
+                        <h2 id="banner-english-name" class="font-serif text-xl sm:text-2xl font-bold tracking-wider text-parchment-50">
+                            AL-FATIHA
+                        </h2>
+                        <p id="banner-italian-meaning" class="text-sm text-parchment-200/80 italic mt-1">
+                            L'Aprente • 7 Versetti • Meccana
+                        </p>
+
+                        <!-- Bismillah (mostrata per tutte le sure tranne la 1 che ce l'ha come versetto 1, e la 9 At-Tawbah) -->
+                        <div id="bismillah-container" class="mt-6 pt-5 border-t border-gold-500/25 hidden">
+                            <p class="font-arabic text-2xl sm:text-3xl text-gold-300" dir="rtl">
+                                بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ
+                            </p>
+                            <p class="text-xs text-parchment-200/70 mt-1">
+                                In nome di Allah, il Compassionevole, il Misericordioso
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Loader durante il caricamento API -->
+                    <div id="loading-spinner" class="hidden py-20 flex flex-col items-center justify-center text-center">
+                        <div class="w-12 h-12 border-4 border-gold-500/30 border-t-gold-500 rounded-full animate-spin mb-4"></div>
+                        <p class="text-emerald-900 dark:text-gold-400 font-medium">Caricamento della Sura in corso...</p>
+                        <p class="text-xs text-stone-500 dark:text-stone-400 mt-1">Recupero testo arabo, traduzione italiana e audio</p>
+                    </div>
+
+                    <!-- Contenitore Lista Versetti -->
+                    <div id="verses-list" class="space-y-5">
+                        <!-- Versetti generati dinamicamente -->
+                    </div>
+
+                    <!-- Navigazione Sura Precedente / Successiva a fine pagina -->
+                    <div class="mt-10 pt-6 border-t border-gold-500/20 flex items-center justify-between gap-4">
+                        <button id="prev-surah-btn" onclick="navigateSurah(-1)" class="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white dark:bg-parchment-900 border border-gold-500/30 hover:border-gold-500 text-emerald-950 dark:text-parchment-100 text-sm font-medium shadow-xs transition-all disabled:opacity-40 disabled:pointer-events-none">
+                            <i class="fa-solid fa-arrow-left text-gold-500"></i>
+                            <span>Sura Precedente</span>
+                        </button>
+                        <button id="next-surah-btn" onclick="navigateSurah(1)" class="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white dark:bg-parchment-900 border border-gold-500/30 hover:border-gold-500 text-emerald-950 dark:text-parchment-100 text-sm font-medium shadow-xs transition-all disabled:opacity-40 disabled:pointer-events-none">
+                            <span>Sura Successiva</span>
+                            <i class="fa-solid fa-arrow-right text-gold-500"></i>
+                        </button>
+                    </div>
+
+                </div>
+            </main>
+
+            <!-- PLAYER AUDIO FISSO IN BASSO -->
+            <div id="audio-player-bar" class="fixed bottom-0 right-0 left-0 lg:left-80 bg-emerald-950/95 dark:bg-parchment-900/95 backdrop-blur-lg border-t border-gold-500/40 text-parchment-50 px-4 py-3 z-30 shadow-2xl transform translate-y-full transition-transform duration-300">
+                <div class="max-w-4xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3">
+                    
+                    <!-- Info Versetto in Riproduzione -->
+                    <div class="flex items-center gap-3 w-full sm:w-auto justify-between sm:justify-start">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-xl bg-gold-500/20 border border-gold-500/40 flex items-center justify-center text-gold-400">
+                                <div id="audio-wave" class="flex items-end gap-0.5 h-4">
+                                    <span class="w-1 bg-gold-400 rounded-full h-1.5"></span>
+                                    <span class="w-1 bg-gold-400 rounded-full h-3"></span>
+                                    <span class="w-1 bg-gold-400 rounded-full h-2"></span>
+                                </div>
+                            </div>
+                            <div>
+                                <p id="player-title" class="text-sm font-semibold text-gold-400">Al-Fatiha • Versetto 1</p>
+                                <p class="text-xs text-parchment-200/70">Recitatore: Mishary Rashid Alafasy</p>
+                            </div>
+                        </div>
+
+                        <!-- Pulsante chiudi player su mobile -->
+                        <button onclick="stopAudio()" class="sm:hidden p-2 text-parchment-200/60 hover:text-white">
+                            <i class="fa-solid fa-xmark"></i>
+                        </button>
+                    </div>
+
+                    <!-- Controlli Riproduzione Centrali -->
+                    <div class="flex items-center gap-4">
+                        <button onclick="playPreviousAyah()" class="p-2 text-parchment-200 hover:text-gold-400 transition-colors" title="Versetto precedente">
+                            <i class="fa-solid fa-backward-step text-lg"></i>
+                        </button>
+                        
+                        <button id="player-play-pause" onclick="toggleAudioPlayPause()" class="w-11 h-11 rounded-full bg-gold-500 hover:bg-gold-400 text-emerald-950 flex items-center justify-center shadow-lg transition-transform active:scale-95">
+                            <i id="player-play-icon" class="fa-solid fa-play text-base ml-0.5"></i>
+                        </button>
+
+                        <button onclick="playNextAyah()" class="p-2 text-parchment-200 hover:text-gold-400 transition-colors" title="Versetto successivo">
+                            <i class="fa-solid fa-forward-step text-lg"></i>
+                        </button>
+                    </div>
+
+                    <!-- Controlli Extra (Auto-next & Chiudi) -->
+                    <div class="hidden sm:flex items-center gap-3">
+                        <button id="auto-play-toggle" onclick="toggleAutoPlay()" class="px-2.5 py-1 rounded-lg text-xs font-medium bg-gold-500/20 text-gold-300 border border-gold-500/40 flex items-center gap-1.5 transition-colors" title="Riproduzione continua">
+                            <i class="fa-solid fa-repeat"></i>
+                            <span>Continuo: ON</span>
+                        </button>
+                        <button onclick="stopAudio()" class="p-2 text-parchment-200/60 hover:text-white transition-colors" title="Chiudi player">
+                            <i class="fa-solid fa-xmark text-lg"></i>
+                        </button>
+                    </div>
+
+                </div>
+                <!-- Barra avanzamento sottile -->
+                <div class="w-full bg-white/10 h-1 mt-2 rounded-full overflow-hidden">
+                    <div id="audio-progress-bar" class="bg-gold-400 h-full w-0 transition-all duration-150"></div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Elemento Audio HTML5 nascosto -->
+    <audio id="quran-audio" preload="none"></audio>
+
+    <script>
+        /**
+         * METADATI COMPLETI DELLE 114 SURE DEL SACRO CORANO
+         * Include: numero, nome traslitterato, nome arabo, significato italiano, numero versetti, rivelazione.
+         */
+        const ALL_SURAHS_META = [
+            { number: 1, name: "Al-Fatiha", arabic: "الفاتحة", italian: "L'Aprente", ayahs: 7, type: "Meccana", featured: true },
+            { number: 2, name: "Al-Baqarah", arabic: "البقرة", italian: "La Giovenca", ayahs: 286, type: "Medinese", featured: true },
+            { number: 3, name: "Al-'Imran", arabic: "آل عمران", italian: "La Famiglia di Imran", ayahs: 200, type: "Medinese" },
+            { number: 4, name: "An-Nisa", arabic: "النساء", italian: "Le Donne", ayahs: 176, type: "Medinese" },
+            { number: 5, name: "Al-Ma'idah", arabic: "المائدة", italian: "La Tavola Imbandita", ayahs: 120, type: "Medinese" },
+            { number: 6, name: "Al-An'am", arabic: "الأنعام", italian: "Il Bestiame", ayahs: 165, type: "Meccana" },
+            { number: 7, name: "Al-A'raf", arabic: "الأعراف", italian: "Il Limbo", ayahs: 206, type: "Meccana" },
+            { number: 8, name: "Al-Anfal", arabic: "الأنفال", italian: "Il Bottino", ayahs: 75, type: "Medinese" },
+            { number: 9, name: "At-Tawbah", arabic: "التوبة", italian: "Il Pentimento", ayahs: 129, type: "Medinese" },
+            { number: 10, name: "Yunus", arabic: "يونس", italian: "Giona", ayahs: 109, type: "Meccana" },
+            { number: 11, name: "Hud", arabic: "هود", italian: "Hud", ayahs: 123, type: "Meccana" },
+            { number: 12, name: "Yusuf", arabic: "يوسف", italian: "Giuseppe", ayahs: 111, type: "Meccana" },
+            { number: 13, name: "Ar-Ra'd", arabic: "الرعد", italian: "Il Tuono", ayahs: 43, type: "Medinese" },
+            { number: 14, name: "Ibrahim", arabic: "ابراهيم", italian: "Abramo", ayahs: 52, type: "Meccana" },
+            { number: 15, name: "Al-Hijr", arabic: "الحجر", italian: "Al-Hijr", ayahs: 99, type: "Meccana" },
+            { number: 16, name: "An-Nahl", arabic: "النحل", italian: "Le Api", ayahs: 128, type: "Meccana" },
+            { number: 17, name: "Al-Isra", arabic: "الإسراء", italian: "Il Viaggio Notturno", ayahs: 111, type: "Meccana" },
+            { number: 18, name: "Al-Kahf", arabic: "الكهف", italian: "La Caverna", ayahs: 110, type: "Meccana", featured: true },
+            { number: 19, name: "Maryam", arabic: "مريم", italian: "Maria", ayahs: 98, type: "Meccana" },
+            { number: 20, name: "Ta-Ha", arabic: "طه", italian: "Ta-Ha", ayahs: 135, type: "Meccana" },
+            { number: 21, name: "Al-Anbiya", arabic: "الأنبياء", italian: "I Profeti", ayahs: 112, type: "Meccana" },
+            { number: 22, name: "Al-Hajj", arabic: "الحج", italian: "Il Pellegrinaggio", ayahs: 78, type: "Medinese" },
+            { number: 23, name: "Al-Mu'minun", arabic: "المؤمنون", italian: "I Credenti", ayahs: 118, type: "Meccana" },
+            { number: 24, name: "An-Nur", arabic: "النور", italian: "La Luce", ayahs: 64, type: "Medinese" },
+            { number: 25, name: "Al-Furqan", arabic: "الفرقان", italian: "Il Discrimine", ayahs: 77, type: "Meccana" },
+            { number: 26, name: "Ash-Shu'ara", arabic: "الشعراء", italian: "I Poeti", ayahs: 227, type: "Meccana" },
+            { number: 27, name: "An-Naml", arabic: "النمل", italian: "Le Formiche", ayahs: 93, type: "Meccana" },
+            { number: 28, name: "Al-Qasas", arabic: "القصص", italian: "Il Racconto", ayahs: 88, type: "Meccana" },
+            { number: 29, name: "Al-'Ankabut", arabic: "العنكبوت", italian: "Il Ragno", ayahs: 69, type: "Meccana" },
+            { number: 30, name: "Ar-Rum", arabic: "الروم", italian: "I Romani", ayahs: 60, type: "Meccana" },
+            { number: 31, name: "Luqman", arabic: "لقمان", italian: "Luqman", ayahs: 34, type: "Meccana" },
+            { number: 32, name: "As-Sajdah", arabic: "السجدة", italian: "La Prostrazione", ayahs: 30, type: "Meccana" },
+            { number: 33, name: "Al-Ahzab", arabic: "الأحزاب", italian: "I Coalizzati", ayahs: 73, type: "Medinese" },
+            { number: 34, name: "Saba", arabic: "سبإ", italian: "Saba", ayahs: 54, type: "Meccana" },
+            { number: 35, name: "Fatir", arabic: "فاطر", italian: "Il Creatore", ayahs: 45, type: "Meccana" },
+            { number: 36, name: "Ya-Sin", arabic: "يس", italian: "Ya-Sin", ayahs: 83, type: "Meccana", featured: true },
+            { number: 37, name: "As-Saffat", arabic: "الصافات", italian: "I Ranghi", ayahs: 182, type: "Meccana" },
+            { number: 38, name: "Sad", arabic: "ص", italian: "Sad", ayahs: 88, type: "Meccana" },
+            { number: 39, name: "Az-Zumar", arabic: "الزمر", italian: "I Gruppi", ayahs: 75, type: "Meccana" },
+            { number: 40, name: "Ghafir", arabic: "غافر", italian: "Il Perdonatore", ayahs: 85, type: "Meccana" },
+            { number: 41, name: "Fussilat", arabic: "فصلت", italian: "Esposti Chiaramente", ayahs: 54, type: "Meccana" },
+            { number: 42, name: "Ash-Shura", arabic: "الشورى", italian: "La Consultazione", ayahs: 53, type: "Meccana" },
+            { number: 43, name: "Az-Zukhruf", arabic: "الزخرف", italian: "Gli Ornamenti d'Oro", ayahs: 89, type: "Meccana" },
+            { number: 44, name: "Ad-Dukhan", arabic: "الدخان", italian: "Il Fumo", ayahs: 59, type: "Meccana" },
+            { number: 45, name: "Al-Jathiyah", arabic: "الجاثية", italian: "L'Inginocchiata", ayahs: 37, type: "Meccana" },
+            { number: 46, name: "Al-Ahqaf", arabic: "الأحقاف", italian: "Al-Ahqaf", ayahs: 35, type: "Meccana" },
+            { number: 47, name: "Muhammad", arabic: "محمد", italian: "Muhammad", ayahs: 38, type: "Medinese" },
+            { number: 48, name: "Al-Fath", arabic: "الفتح", italian: "La Vittoria", ayahs: 29, type: "Medinese" },
+            { number: 49, name: "Al-Hujurat", arabic: "الحجرات", italian: "Le Stanze Intime", ayahs: 18, type: "Medinese" },
+            { number: 50, name: "Qaf", arabic: "ق", italian: "Qaf", ayahs: 45, type: "Meccana" },
+            { number: 51, name: "Adh-Dhariyat", arabic: "الذاريات", italian: "Quelli che Spargono", ayahs: 60, type: "Meccana" },
+            { number: 52, name: "At-Tur", arabic: "الطور", italian: "Il Monte", ayahs: 49, type: "Meccana" },
+            { number: 53, name: "An-Najm", arabic: "النجم", italian: "La Stella", ayahs: 62, type: "Meccana" },
+            { number: 54, name: "Al-Qamar", arabic: "القمر", italian: "La Luna", ayahs: 55, type: "Meccana" },
+            { number: 55, name: "Ar-Rahman", arabic: "الرحمن", italian: "Il Compassionevole", ayahs: 78, type: "Medinese", featured: true },
+            { number: 56, name: "Al-Waqi'ah", arabic: "الواقعة", italian: "L'Evento", ayahs: 96, type: "Meccana" },
+            { number: 57, name: "Al-Hadid", arabic: "الحديد", italian: "Il Ferro", ayahs: 29, type: "Medinese" },
+            { number: 58, name: "Al-Mujadila", arabic: "المجادلة", italian: "La Disputante", ayahs: 22, type: "Medinese" },
+            { number: 59, name: "Al-Hashr", arabic: "الحشر", italian: "L'Esodo", ayahs: 24, type: "Medinese" },
+            { number: 60, name: "Al-Mumtahanah", arabic: "الممتحنة", italian: "L'Esaminata", ayahs: 13, type: "Medinese" },
+            { number: 61, name: "As-Saff", arabic: "الصف", italian: "I Ranghi Serrati", ayahs: 14, type: "Medinese" },
+            { number: 62, name: "Al-Jumu'ah", arabic: "الجمعة", italian: "Il Venerdì", ayahs: 11, type: "Medinese" },
+            { number: 63, name: "Al-Munafiqun", arabic: "المنافقون", italian: "Gli Ipocriti", ayahs: 11, type: "Medinese" },
+            { number: 64, name: "At-Taghabun", arabic: "التغابن", italian: "Il Reciproco Inganno", ayahs: 18, type: "Medinese" },
+            { number: 65, name: "At-Talaq", arabic: "الطلاق", italian: "Il Divorzio", ayahs: 12, type: "Medinese" },
+            { number: 66, name: "At-Tahrim", arabic: "التحريم", italian: "L'Interdizione", ayahs: 12, type: "Medinese" },
+            { number: 67, name: "Al-Mulk", arabic: "الملك", italian: "La Sovranità", ayahs: 30, type: "Meccana", featured: true },
+            { number: 68, name: "Al-Qalam", arabic: "القلم", italian: "Il Calamo", ayahs: 52, type: "Meccana" },
+            { number: 69, name: "Al-Haqqah", arabic: "الحاقة", italian: "L'Inevitabile", ayahs: 52, type: "Meccana" },
+            { number: 70, name: "Al-Ma'arij", arabic: "المعارج", italian: "Le Vie dell'Ascesa", ayahs: 44, type: "Meccana" },
+            { number: 71, name: "Nuh", arabic: "نوح", italian: "Noè", ayahs: 28, type: "Meccana" },
+            { number: 72, name: "Al-Jinn", arabic: "الجن", italian: "I Demoni", ayahs: 28, type: "Meccana" },
+            { number: 73, name: "Al-Muzzammil", arabic: "المزمل", italian: "L'Avvolto nel Mantello", ayahs: 20, type: "Meccana" },
+            { number: 74, name: "Al-Muddaththir", arabic: "المدثر", italian: "L'Avvolto nel Sudario", ayahs: 56, type: "Meccana" },
+            { number: 75, name: "Al-Qiyamah", arabic: "القيامة", italian: "La Resurrezione", ayahs: 40, type: "Meccana" },
+            { number: 76, name: "Al-Insan", arabic: "الانسان", italian: "L'Uomo", ayahs: 31, type: "Medinese" },
+            { number: 77, name: "Al-Mursalat", arabic: "المرسلات", italian: "Le Inviate", ayahs: 50, type: "Meccana" },
+            { number: 78, name: "An-Naba", arabic: "النبإ", italian: "L'Annuncio", ayahs: 40, type: "Meccana" },
+            { number: 79, name: "An-Nazi'at", arabic: "النازعات", italian: "Coloro che Strappano", ayahs: 46, type: "Meccana" },
+            { number: 80, name: "'Abasa", arabic: "عبس", italian: "Si Accigliò", ayahs: 42, type: "Meccana" },
+            { number: 81, name: "At-Takwir", arabic: "التكوير", italian: "L'Oscuramento", ayahs: 29, type: "Meccana" },
+            { number: 82, name: "Al-Infitar", arabic: "الإنفطار", italian: "La Fenditura", ayahs: 19, type: "Meccana" },
+            { number: 83, name: "Al-Mutaffifin", arabic: "المطففين", italian: "I Frodatori", ayahs: 36, type: "Meccana" },
+            { number: 84, name: "Al-Inshiqaq", arabic: "الإنشقاق", italian: "La Spaccatura", ayahs: 25, type: "Meccana" },
+            { number: 85, name: "Al-Buruj", arabic: "البروج", italian: "Le Costellazioni", ayahs: 22, type: "Meccana" },
+            { number: 86, name: "At-Tariq", arabic: "الطارق", italian: "L'Astro Notturno", ayahs: 17, type: "Meccana" },
+            { number: 87, name: "Al-A'la", arabic: "الأعلى", italian: "L'Altissimo", ayahs: 19, type: "Meccana" },
+            { number: 88, name: "Al-Ghashiyah", arabic: "الغاشية", italian: "L'Avvolgente", ayahs: 26, type: "Meccana" },
+            { number: 89, name: "Al-Fajr", arabic: "الفجر", italian: "L'Alba", ayahs: 30, type: "Meccana" },
+            { number: 90, name: "Al-Balad", arabic: "البلد", italian: "La Contrada", ayahs: 20, type: "Meccana" },
+            { number: 91, name: "Ash-Shams", arabic: "الشمس", italian: "Il Sole", ayahs: 15, type: "Meccana" },
+            { number: 92, name: "Al-Layl", arabic: "الليل", italian: "La Notte", ayahs: 21, type: "Meccana" },
+            { number: 93, name: "Ad-Duhaa", arabic: "الضحى", italian: "Il Mattino Luminoso", ayahs: 11, type: "Meccana" },
+            { number: 94, name: "Ash-Sharh", arabic: "الشرح", italian: "L'Apertura", ayahs: 8, type: "Meccana" },
+            { number: 95, name: "At-Tin", arabic: "التين", italian: "Il Fico", ayahs: 8, type: "Meccana" },
+            { number: 96, name: "Al-'Alaq", arabic: "العلق", italian: "L'Aderenza", ayahs: 19, type: "Meccana" },
+            { number: 97, name: "Al-Qadr", arabic: "القدر", italian: "Il Destino", ayahs: 5, type: "Meccana" },
+            { number: 98, name: "Al-Bayyinah", arabic: "البينة", italian: "La Prova", ayahs: 8, type: "Medinese" },
+            { number: 99, name: "Az-Zalzalah", arabic: "الزلزلة", italian: "Il Terremoto", ayahs: 8, type: "Medinese" },
+            { number: 100, name: "Al-'Adiyat", arabic: "العاديات", italian: "Le Corsiere", ayahs: 11, type: "Meccana" },
+            { number: 101, name: "Al-Qari'ah", arabic: "القارعة", italian: "La Percotente", ayahs: 11, type: "Meccana" },
+            { number: 102, name: "At-Takathur", arabic: "التكاثر", italian: "Il Rivaleggiare", ayahs: 8, type: "Meccana" },
+            { number: 103, name: "Al-'Asr", arabic: "العصر", italian: "Il Tempo", ayahs: 3, type: "Meccana" },
+            { number: 104, name: "Al-Humazah", arabic: "الهمزة", italian: "Il Diffamatore", ayahs: 9, type: "Meccana" },
+            { number: 105, name: "Al-Fil", arabic: "الفيل", italian: "L'Elefante", ayahs: 5, type: "Meccana" },
+            { number: 106, name: "Quraysh", arabic: "قريش", italian: "I Coreisciti", ayahs: 4, type: "Meccana" },
+            { number: 107, name: "Al-Ma'un", arabic: "الماعون", italian: "L'Utensile", ayahs: 7, type: "Meccana" },
+            { number: 108, name: "Al-Kawthar", arabic: "الكوثر", italian: "L'Abbondanza", ayahs: 3, type: "Meccana" },
+            { number: 109, name: "Al-Kafirun", arabic: "الكافرون", italian: "I Miscredenti", ayahs: 6, type: "Meccana" },
+            { number: 110, name: "An-Nasr", arabic: "النصر", italian: "Il Soccorso", ayahs: 3, type: "Medinese" },
+            { number: 111, name: "Al-Masad", arabic: "المسد", italian: "Le Fibre di Palma", ayahs: 5, type: "Meccana" },
+            { number: 112, name: "Al-Ikhlas", arabic: "الإخلاص", italian: "Il Puro Monoteismo", ayahs: 4, type: "Meccana", featured: true },
+            { number: 113, name: "Al-Falaq", arabic: "الفلق", italian: "L'Alba Nascente", ayahs: 5, type: "Meccana", featured: true },
+            { number: 114, name: "An-Nas", arabic: "الناس", italian: "Gli Uomini", ayahs: 6, type: "Meccana", featured: true }
+        ];
+
+        /**
+         * FALLBACK INTEGRATO OFFLINE PER LE PRINCIPALI SURE
+         * Garantisce il funzionamento immediato anche in assenza di connessione internet o errori API.
+         */
+        const OFFLINE_SURAHS_DATA = {
+            1: [
+                { numberInSurah: 1, globalNumber: 1, arabic: "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ", italian: "In nome di Allah, il Compassionevole, il Misericordioso.", audio: "https://cdn.islamic.network/quran/audio/128/ar.alafasy/1.mp3" },
+                { numberInSurah: 2, globalNumber: 2, arabic: "ٱلْحَمْدُ لِلَّهِ رَبِّ ٱلْعَٰلَمِينَ", italian: "La lode [appartiene] ad Allah, Signore dei mondi,", audio: "https://cdn.islamic.network/quran/audio/128/ar.alafasy/2.mp3" },
+                { numberInSurah: 3, globalNumber: 3, arabic: "ٱلرَّحْمَٰنِ ٱلرَّحِيمِ", italian: "il Compassionevole, il Misericordioso,", audio: "https://cdn.islamic.network/quran/audio/128/ar.alafasy/3.mp3" },
+                { numberInSurah: 4, globalNumber: 4, arabic: "مَٰلِكِ يَوْمِ ٱلدِّينِ", italian: "Re del Giorno del Giudizio.", audio: "https://cdn.islamic.network/quran/audio/128/ar.alafasy/4.mp3" },
+                { numberInSurah: 5, globalNumber: 5, arabic: "إِيَّاكَ نَعْبُدُ وَإِيَّاكَ نَسْتَعِينُ", italian: "Te noi adoriamo e a Te chiediamo aiuto.", audio: "https://cdn.islamic.network/quran/audio/128/ar.alafasy/5.mp3" },
+                { numberInSurah: 6, globalNumber: 6, arabic: "ٱهْدِنَا ٱلصِّرَٰطَ ٱلْمُسْتَقِيمَ", italian: "Guidaci sulla retta via,", audio: "https://cdn.islamic.network/quran/audio/128/ar.alafasy/6.mp3" },
+                { numberInSurah: 7, globalNumber: 7, arabic: "صِرَٰطَ ٱلَّذِينَ أَنْعَمْتَ عَلَيْهِمْ غَيْرِ ٱلْمَغْضُوبِ عَلَيْهِمْ وَلَا ٱلضَّآلِّينَ", italian: "la via di coloro che hai colmato di grazia, non di coloro che [sono incorsi] nella [Tua] ira, né degli sviati.", audio: "https://cdn.islamic.network/quran/audio/128/ar.alafasy/7.mp3" }
+            ],
+            2: [
+                { numberInSurah: 1, globalNumber: 8, arabic: "الٓمٓ", italian: "Alif, Lâm, Mîm.", audio: "https://cdn.islamic.network/quran/audio/128/ar.alafasy/8.mp3" },
+                { numberInSurah: 2, globalNumber: 9, arabic: "ذَٰلِكَ ٱلْكِتَٰبُ لَا رَيْبَ ۛ فِيهِ ۛ هُدًى لِّلْمُتَّقِينَ", italian: "Questo è il Libro su cui non ci sono dubbi, una guida per i timorati,", audio: "https://cdn.islamic.network/quran/audio/128/ar.alafasy/9.mp3" },
+                { numberInSurah: 3, globalNumber: 10, arabic: "ٱلَّذِينَ يُؤْمِنُونَ بِٱلْغَيْبِ وَيُقِيمُونَ ٱلصَّلَوٰةَ وَمِمَّا رَزَقْنَٰهُمْ يُنفِقُونَ", italian: "coloro che credono nell'invisibile, assolvono all'orazione e donano di ciò di cui Noi li abbiamo provvisti,", audio: "https://cdn.islamic.network/quran/audio/128/ar.alafasy/10.mp3" },
+                { numberInSurah: 4, globalNumber: 11, arabic: "وَٱلَّذِينَ يُؤْمِنُونَ بِمَآ أُنزِلَ إِلَيْكَ وَمَآ أُنزِلَ مِن قَبْلِكَ وَبِٱلْءَاخِرَةِ هُمْ يُوقِنُونَ", italian: "coloro che credono in ciò che è stato fatto scendere su di te e in ciò che è stato fatto scendere prima di te, e che hanno certezza dell'Altra vita.", audio: "https://cdn.islamic.network/quran/audio/128/ar.alafasy/11.mp3" },
+                { numberInSurah: 5, globalNumber: 12, arabic: "أُو۟لَٰٓئِكَ عَلَىٰ هُدًى مِّن رَّبِّهِمْ ۖ وَأُو۟لَٰٓئِكَ هُمُ ٱلْمُفْلِحُونَ", italian: "Essi sono sulla guida del loro Signore, essi sono coloro che prospereranno.", audio: "https://cdn.islamic.network/quran/audio/128/ar.alafasy/12.mp3" }
+            ],
+            36: [
+                { numberInSurah: 1, globalNumber: 3706, arabic: "يسٓ", italian: "Yâ-Sîn.", audio: "https://cdn.islamic.network/quran/audio/128/ar.alafasy/3706.mp3" },
+                { numberInSurah: 2, globalNumber: 3707, arabic: "وَٱلْقُرْءَانِ ٱلْحَكِيمِ", italian: "Per il Corano saggio!", audio: "https://cdn.islamic.network/quran/audio/128/ar.alafasy/3707.mp3" },
+                { numberInSurah: 3, globalNumber: 3708, arabic: "إِنَّكَ لَمِنَ ٱلْمُرْسَلِينَ", italian: "In verità tu sei uno degli inviati,", audio: "https://cdn.islamic.network/quran/audio/128/ar.alafasy/3708.mp3" },
+                { numberInSurah: 4, globalNumber: 3709, arabic: "عَلَىٰ صِرَٰطٍ مُّسْتَقِيمٍ", italian: "su una retta via.", audio: "https://cdn.islamic.network/quran/audio/128/ar.alafasy/3709.mp3" },
+                { numberInSurah: 5, globalNumber: 3710, arabic: "تَنزِيلَ ٱلْعَزِيزِ ٱلرَّحِيمِ", italian: "Rivelazione dell'Eccelso, del Misericordioso,", audio: "https://cdn.islamic.network/quran/audio/128/ar.alafasy/3710.mp3" }
+            ],
+            55: [
+                { numberInSurah: 1, globalNumber: 4902, arabic: "ٱلرَّحْمَٰنُ", italian: "Il Compassionevole,", audio: "https://cdn.islamic.network/quran/audio/128/ar.alafasy/4902.mp3" },
+                { numberInSurah: 2, globalNumber: 4903, arabic: "عَلَّمَ ٱلْقُرْءَانَ", italian: "ha insegnato il Corano,", audio: "https://cdn.islamic.network/quran/audio/128/ar.alafasy/4903.mp3" },
+                { numberInSurah: 3, globalNumber: 4904, arabic: "خَلَقَ ٱلْإِنسَٰنَ", italian: "ha creato l'uomo,", audio: "https://cdn.islamic.network/quran/audio/128/ar.alafasy/4904.mp3" },
+                { numberInSurah: 4, globalNumber: 4905, arabic: "عَلَّمَهُ ٱلْبَيَانَ", italian: "e gli ha insegnato ad esprimersi.", audio: "https://cdn.islamic.network/quran/audio/128/ar.alafasy/4905.mp3" },
+                { numberInSurah: 5, globalNumber: 4906, arabic: "ٱلشَّمْسُ وَٱلْقَمَرُ بِحُسْبَانٍ", italian: "Il sole e la luna [si muovono] secondo un calcolo preciso.", audio: "https://cdn.islamic.network/quran/audio/128/ar.alafasy/4906.mp3" }
+            ],
+            112: [
+                { numberInSurah: 1, globalNumber: 6222, arabic: "قُلْ هُوَ ٱللَّهُ أَحَدٌ", italian: "Di': «Egli Allah è Unico,", audio: "https://cdn.islamic.network/quran/audio/128/ar.alafasy/6222.mp3" },
+                { numberInSurah: 2, globalNumber: 6223, arabic: "ٱللَّهُ ٱلصَّمَدُ", italian: "Allah l'Assoluto.", audio: "https://cdn.islamic.network/quran/audio/128/ar.alafasy/6223.mp3" },
+                { numberInSurah: 3, globalNumber: 6224, arabic: "لَمْ يَلِدْ وَلَمْ يُولَدْ", italian: "Non ha generato, non è stato generato", audio: "https://cdn.islamic.network/quran/audio/128/ar.alafasy/6224.mp3" },
+                { numberInSurah: 4, globalNumber: 6225, arabic: "وَلَمْ يَكُن لَّهُۥ كُفُوًا أَحَدٌۢ", italian: "e nessuno è eguale a Lui».", audio: "https://cdn.islamic.network/quran/audio/128/ar.alafasy/6225.mp3" }
+            ],
+            113: [
+                { numberInSurah: 1, globalNumber: 6226, arabic: "قُلْ أَعُوذُ بِرَبِّ ٱلْفَلَقِ", italian: "Di': «Mi rifugio nel Signore dell'alba nascente,", audio: "https://cdn.islamic.network/quran/audio/128/ar.alafasy/6226.mp3" },
+                { numberInSurah: 2, globalNumber: 6227, arabic: "مِن شَرِّ مَا خَلَقَ", italian: "contro il male di ciò che ha creato,", audio: "https://cdn.islamic.network/quran/audio/128/ar.alafasy/6227.mp3" },
+                { numberInSurah: 3, globalNumber: 6228, arabic: "وَمِن شَرِّ غَاسِقٍ إِذَا وَقَبَ", italian: "e contro il male dell'oscurità che si estende,", audio: "https://cdn.islamic.network/quran/audio/128/ar.alafasy/6228.mp3" },
+                { numberInSurah: 4, globalNumber: 6229, arabic: "وَمِن شَرِّ ٱلنَّفَّٰثَٰتِ فِى ٱلْعُقَدِ", italian: "e contro il male di coloro che soffiano sui nodi,", audio: "https://cdn.islamic.network/quran/audio/128/ar.alafasy/6229.mp3" },
+                { numberInSurah: 5, globalNumber: 6230, arabic: "وَمِن شَرِّ حَاسِدٍ إِذَا حَسَدَ", italian: "e contro il male dell'invidioso quando invidia».", audio: "https://cdn.islamic.network/quran/audio/128/ar.alafasy/6230.mp3" }
+            ],
+            114: [
+                { numberInSurah: 1, globalNumber: 6231, arabic: "قُلْ أَعُوذُ بِرَبِّ ٱلنَّاسِ", italian: "Di': «Mi rifugio nel Signore degli uomini,", audio: "https://cdn.islamic.network/quran/audio/128/ar.alafasy/6231.mp3" },
+                { numberInSurah: 2, globalNumber: 6232, arabic: "مَلِكِ ٱلنَّاسِ", italian: "Re degli uomini,", audio: "https://cdn.islamic.network/quran/audio/128/ar.alafasy/6232.mp3" },
+                { numberInSurah: 3, globalNumber: 6233, arabic: "إِلَٰهِ ٱلنَّاسِ", italian: "Dio degli uomini,", audio: "https://cdn.islamic.network/quran/audio/128/ar.alafasy/6233.mp3" },
+                { numberInSurah: 4, globalNumber: 6234, arabic: "مِن شَرِّ ٱلْوَسْوَاسِ ٱلْخَنَّاسِ", italian: "contro il male del sussurratore furtivo,", audio: "https://cdn.islamic.network/quran/audio/128/ar.alafasy/6234.mp3" },
+                { numberInSurah: 5, globalNumber: 6235, arabic: "ٱلَّذِى يُوَسْوِسُ فِى صُدُورِ ٱلنَّاسِ", italian: "che soffia il male nei cuori degli uomini,", audio: "https://cdn.islamic.network/quran/audio/128/ar.alafasy/6235.mp3" },
+                { numberInSurah: 6, globalNumber: 6236, arabic: "مِنَ ٱلْجِنَّةِ وَٱلنَّاسِ", italian: "che [provenga] dai dèmoni o dagli uomini».", audio: "https://cdn.islamic.network/quran/audio/128/ar.alafasy/6236.mp3" }
+            ]
+        };
+
+        /**
+         * STATO GLOBALE DELL'APPLICAZIONE
+         */
+        const state = {
+            currentSurahNumber: 1,
+            currentVerses: [],
+            arabicFontSize: 32, // in pixel
+            bookmarks: JSON.parse(localStorage.getItem('quran_bookmarks_it') || '[]'),
+            cache: {}, // Cache in memoria per le Sure già scaricate
+            audio: {
+                isPlaying: false,
+                currentAyahIndex: -1,
+                autoPlayNext: true
+            }
+        };
+
+        // Riferimenti DOM principali
+        const audioEl = document.getElementById('quran-audio');
+
+        /**
+         * INIZIALIZZAZIONE
+         */
+        document.addEventListener('DOMContentLoaded', () => {
+            initTheme();
+            renderSurahList(ALL_SURAHS_META);
+            updateBookmarksUI();
+            loadSurah(1);
+            setupAudioListeners();
+        });
+
+        /**
+         * GESTIONE TEMA (CHIARO / SCURO)
+         */
+        function initTheme() {
+            const savedTheme = localStorage.getItem('quran_theme');
+            const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            
+            if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
+                document.documentElement.classList.add('dark');
+                document.getElementById('theme-icon').className = 'fa-solid fa-sun';
+            } else {
+                document.documentElement.classList.remove('dark');
+                document.getElementById('theme-icon').className = 'fa-solid fa-moon';
+            }
+        }
+
+        function toggleDarkMode() {
+            const html = document.documentElement;
+            const isDark = html.classList.toggle('dark');
+            localStorage.setItem('quran_theme', isDark ? 'dark' : 'light');
+            document.getElementById('theme-icon').className = isDark ? 'fa-solid fa-sun' : 'fa-solid fa-moon';
+        }
+
+        /**
+         * GESTIONE SIDEBAR E TAB (SURE / SEGNALIBRI)
+         */
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('sidebar-overlay');
+            sidebar.classList.toggle('-translate-x-full');
+            overlay.classList.toggle('hidden');
+        }
+
+        function switchSidebarTab(tab) {
+            const tabSurahs = document.getElementById('tab-surahs');
+            const tabBookmarks = document.getElementById('tab-bookmarks');
+            const surahList = document.getElementById('surah-list');
+            const bookmarksList = document.getElementById('bookmarks-list');
+            const searchContainer = document.getElementById('search-container');
+
+            if (tab === 'surahs') {
+                tabSurahs.className = "py-2 px-3 rounded-lg text-sm font-medium bg-gold-500 text-emerald-950 shadow-sm transition-all flex items-center justify-center gap-2";
+                tabBookmarks.className = "py-2 px-3 rounded-lg text-sm font-medium text-parchment-200 hover:bg-white/10 transition-all flex items-center justify-center gap-2";
+                surahList.classList.remove('hidden');
+                searchContainer.classList.remove('hidden');
+                bookmarksList.classList.add('hidden');
+            } else {
+                tabBookmarks.className = "py-2 px-3 rounded-lg text-sm font-medium bg-gold-500 text-emerald-950 shadow-sm transition-all flex items-center justify-center gap-2";
+                tabSurahs.className = "py-2 px-3 rounded-lg text-sm font-medium text-parchment-200 hover:bg-white/10 transition-all flex items-center justify-center gap-2";
+                bookmarksList.classList.remove('hidden');
+                surahList.classList.add('hidden');
+                searchContainer.classList.add('hidden');
+                updateBookmarksUI();
+            }
+        }
+
+        /**
+         * RENDERING E RICERCA DELLE 114 SURE
+         */
+        function renderSurahList(surahs) {
+            const container = document.getElementById('surah-list');
+            if (surahs.length === 0) {
+                container.innerHTML = `<div class="p-6 text-center text-parchment-200/60 text-sm">Nessuna Sura trovata.</div>`;
+                return;
+            }
+
+            container.innerHTML = surahs.map(s => {
+                const isActive = s.number === state.currentSurahNumber;
+                const activeClasses = isActive 
+                    ? 'bg-gold-500/20 border-gold-400 text-gold-300' 
+                    : 'border-transparent hover:bg-white/5 text-parchment-100';
+
+                return `
+                    <button onclick="selectSurahFromMenu(${s.number})" id="surah-item-${s.number}"
+                        class="w-full text-left p-3 rounded-xl border ${activeClasses} transition-all flex items-center justify-between group">
+                        <div class="flex items-center gap-3">
+                            <div class="w-8 h-8 rounded-lg ${isActive ? 'bg-gold-500 text-emerald-950 font-bold' : 'bg-emerald-950/80 dark:bg-parchment-950 text-gold-400'} flex items-center justify-center text-xs border border-gold-500/20 group-hover:border-gold-400 transition-colors">
+                                ${s.number}
+                            </div>
+                            <div>
+                                <div class="flex items-center gap-1.5">
+                                    <span class="font-semibold text-sm">${s.name}</span>
+                                    ${s.featured ? '<span class="w-1.5 h-1.5 rounded-full bg-gold-400" title="Sura principale"></span>' : ''}
+                                </div>
+                                <p class="text-xs text-parchment-200/60">${s.italian} • ${s.ayahs} v.</p>
+                            </div>
+                        </div>
+                        <span class="font-arabic text-lg text-gold-400/90">${s.arabic}</span>
+                    </button>
+                `;
+            }).join('');
+        }
+
+        function filterSurahs(query) {
+            const q = query.toLowerCase().trim();
+            const filtered = ALL_SURAHS_META.filter(s => 
+                s.name.toLowerCase().includes(q) || 
+                s.italian.toLowerCase().includes(q) || 
+                s.number.toString() === q
+            );
+            renderSurahList(filtered);
+        }
+
+        function selectSurahFromMenu(surahNumber) {
+            loadSurah(surahNumber);
+            // Su mobile chiude la sidebar dopo la selezione
+            if (window.innerWidth < 1024) {
+                toggleSidebar();
+            }
+        }
+
+        /**
+         * CARICAMENTO DINAMICO SURA TRAMITE ALQURAN CLOUD API CON FALLBACK OFFLINE
+         */
+        async function loadSurah(surahNumber, targetAyahNumber = null) {
+            // Ferma eventuale audio in corso
+            stopAudio();
+
+            state.currentSurahNumber = surahNumber;
+            const meta = ALL_SURAHS_META.find(s => s.number === surahNumber);
+
+            // Aggiorna UI Header e Banner
+            document.getElementById('header-surah-badge').textContent = `Sura ${meta.number}`;
+            document.getElementById('header-surah-title').textContent = meta.name;
+            document.getElementById('banner-arabic-name').textContent = `سُورَةُ ${meta.arabic}`;
+            document.getElementById('banner-english-name').textContent = meta.name.toUpperCase();
+            document.getElementById('banner-italian-meaning').textContent = `${meta.italian} • ${meta.ayahs} Versetti • ${meta.type}`;
+
+            // Gestione Bismillah (non si mostra nella Sura 1 perché è già il versetto 1, né nella Sura 9)
+            const bismillahEl = document.getElementById('bismillah-container');
+            if (surahNumber !== 1 && surahNumber !== 9) {
+                bismillahEl.classList.remove('hidden');
+            } else {
+                bismillahEl.classList.add('hidden');
+            }
+
+            // Aggiorna stato pulsanti Precedente/Successiva
+            document.getElementById('prev-surah-btn').disabled = surahNumber <= 1;
+            document.getElementById('next-surah-btn').disabled = surahNumber >= 114;
+
+            // Aggiorna evidenziazione nella sidebar
+            renderSurahList(ALL_SURAHS_META);
+            document.getElementById('surah-search').value = '';
+
+            // Mostra spinner e nascondi lista versetti
+            const spinner = document.getElementById('loading-spinner');
+            const versesContainer = document.getElementById('verses-list');
+            spinner.classList.remove('hidden');
+            versesContainer.innerHTML = '';
+
+            try {
+                let versesData = [];
+                let isOfflineFallback = false;
+
+                // Controlla prima se è già nella cache di sessione
+                if (state.cache[surahNumber]) {
+                    versesData = state.cache[surahNumber];
+                    updateSourceBadge(true);
+                } else {
+                    // Fetch dall'API pubblica AlQuran Cloud (testo Uthmani, traduzione italiana Piccardo, audio Alafasy)
+                    const apiUrl = `https://api.alquran.cloud/v1/surah/${surahNumber}/editions/quran-uthmani,it.piccardo,ar.alafasy`;
+                    const response = await fetch(apiUrl);
+                    
+                    if (!response.ok) throw new Error('Errore di rete API');
+                    
+                    const json = await response.json();
+                    if (json.code !== 200 || !json.data || json.data.length < 3) {
+                        throw new Error('Formato dati API non valido');
+                    }
+
+                    const arabicEdition = json.data[0].ayahs;
+                    const italianEdition = json.data[1].ayahs;
+                    const audioEdition = json.data[2].ayahs;
+
+                    versesData = arabicEdition.map((ayah, idx) => {
+                        let cleanArabic = ayah.text;
+                        // Rimuove la Bismillah prefissata dal primo versetto delle Sure (eccetto la 1) perché già mostrata nel banner
+                        if (surahNumber !== 1 && idx === 0 && cleanArabic.startsWith("بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ")) {
+                            cleanArabic = cleanArabic.replace("بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ", "").trim();
+                        }
+
+                        return {
+                            numberInSurah: ayah.numberInSurah,
+                            globalNumber: ayah.number,
+                            arabic: cleanArabic,
+                            italian: italianEdition[idx] ? italianEdition[idx].text : '',
+                            audio: audioEdition[idx] ? audioEdition[idx].audio : `https://cdn.islamic.network/quran/audio/128/ar.alafasy/${ayah.number}.mp3`
+                        };
+                    });
+
+                    // Salva in cache
+                    state.cache[surahNumber] = versesData;
+                    updateSourceBadge(true);
+                }
+
+                state.currentVerses = versesData;
+                spinner.classList.add('hidden');
+                renderVerses(versesData);
+
+            } catch (error) {
+                console.warn("API non raggiungibile, attivazione fallback offline:", error);
+                spinner.classList.add('hidden');
+                updateSourceBadge(false);
+
+                if (OFFLINE_SURAHS_DATA[surahNumber]) {
+                    state.currentVerses = OFFLINE_SURAHS_DATA[surahNumber];
+                    renderVerses(state.currentVerses, true);
+                    showToast("Modalità Offline attiva: caricati i versetti integrati.", "warning");
+                } else {
+                    versesContainer.innerHTML = `
+                        <div class="p-8 rounded-2xl bg-white dark:bg-parchment-900 border border-red-500/30 text-center">
+                            <i class="fa-solid fa-wifi text-3xl text-gold-500 mb-3"></i>
+                            <h3 class="font-semibold text-lg mb-1">Connessione all'API non riuscita</h3>
+                            <p class="text-sm text-stone-600 dark:text-stone-400 mb-4">
+                                Questa Sura richiede una connessione internet per essere scaricata. Puoi comunque consultare offline le Sure principali (Al-Fatiha, Al-Baqarah, Ya-Sin, Ar-Rahman, Al-Ikhlas, Al-Falaq, An-Nas).
+                            </p>
+                            <button onclick="loadSurah(${surahNumber})" class="px-4 py-2 rounded-xl bg-emerald-900 text-gold-400 text-sm font-medium">
+                                Riprova caricamento
+                            </button>
+                        </div>
+                    `;
+                }
+            }
+
+            // Scroll in cima o al versetto richiesto (da segnalibro)
+            const scrollContainer = document.getElementById('verses-scroll-container');
+            if (targetAyahNumber) {
+                setTimeout(() => {
+                    const targetEl = document.getElementById(`ayah-card-${targetAyahNumber}`);
+                    if (targetEl) {
+                        targetEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        targetEl.classList.add('ring-2', 'ring-gold-400');
+                        setTimeout(() => targetEl.classList.remove('ring-2', 'ring-gold-400'), 2500);
+                    }
+                }, 150);
+            } else {
+                scrollContainer.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        }
+
+        function updateSourceBadge(isOnline) {
+            const badge = document.getElementById('data-source-badge');
+            const mobileInd = document.getElementById('offline-indicator-mobile');
+            if (isOnline) {
+                badge.innerHTML = `<i class="fa-solid fa-cloud-check text-emerald-400"></i> <span>AlQuran Cloud API</span>`;
+                if (mobileInd) mobileInd.innerHTML = `<span class="w-2 h-2 rounded-full bg-emerald-500"></span> Online`;
+            } else {
+                badge.innerHTML = `<i class="fa-solid fa-database text-amber-400"></i> <span>Archivio Offline Integrato</span>`;
+                if (mobileInd) mobileInd.innerHTML = `<span class="w-2 h-2 rounded-full bg-amber-500"></span> Offline`;
+            }
+        }
+
+        /**
+         * CONVERSIONE NUMERI IN CIFRE ARABO-ORIENTALI (١٢٣...)
+         */
+        function toArabicDigits(num) {
+            const arabicDigits = ['٠', '١', '٢', '٣', '٤', '٥', '٦', '٧', '٨', '٩'];
+            return num.toString().replace(/\d/g, d => arabicDigits[d]);
+        }
+
+        /**
+         * RENDERING DEI VERSETTI (VISUALIZZAZIONE PARALLELA ARABO + ITALIANO)
+         */
+        function renderVerses(verses, isPartialOffline = false) {
+            const container = document.getElementById('verses-list');
+            
+            let html = verses.map((ayah, index) => {
+                const isBookmarked = checkBookmark(state.currentSurahNumber, ayah.numberInSurah);
+                
+                return `
+                    <article id="ayah-card-${ayah.numberInSurah}" 
+                        class="ayah-card group relative rounded-2xl bg-white/95 dark:bg-parchment-900/90 border border-gold-500/20 hover:border-gold-500/50 p-5 sm:p-7 shadow-xs transition-all duration-300">
+                        
+                        <!-- Barra Azioni Superiore del Versetto -->
+                        <div class="flex items-center justify-between mb-5 pb-3 border-b border-stone-100 dark:border-parchment-800">
+                            <div class="flex items-center gap-2">
+                                <span class="px-3 py-1 rounded-lg bg-emerald-900/10 dark:bg-gold-500/10 text-emerald-900 dark:text-gold-400 font-bold text-xs">
+                                    ${state.currentSurahNumber}:${ayah.numberInSurah}
+                                </span>
+                            </div>
+
+                            <div class="flex items-center gap-1.5">
+                                <!-- Pulsante Play singolo versetto -->
+                                <button onclick="playAyah(${index})" id="btn-play-ayah-${index}"
+                                    class="w-9 h-9 rounded-xl bg-parchment-100 dark:bg-parchment-800 hover:bg-emerald-900 hover:text-gold-400 dark:hover:bg-gold-500 dark:hover:text-emerald-950 text-emerald-900 dark:text-gold-400 flex items-center justify-center transition-colors"
+                                    title="Ascolta questo versetto">
+                                    <i class="fa-solid fa-play text-xs"></i>
+                                </button>
+
+                                <!-- Pulsante Segnalibro -->
+                                <button onclick="toggleBookmark(${state.currentSurahNumber}, ${ayah.numberInSurah})" id="btn-bookmark-${ayah.numberInSurah}"
+                                    class="w-9 h-9 rounded-xl bg-parchment-100 dark:bg-parchment-800 hover:bg-gold-500/20 flex items-center justify-center transition-colors ${isBookmarked ? 'text-gold-500' : 'text-stone-400 dark:text-stone-500'}"
+                                    title="${isBookmarked ? 'Rimuovi dai segnalibri' : 'Salva nei segnalibri'}">
+                                    <i class="${isBookmarked ? 'fa-solid' : 'fa-regular'} fa-bookmark text-sm"></i>
+                                </button>
+
+                                <!-- Pulsante Copia Versetto -->
+                                <button onclick="copyAyah(${index})"
+                                    class="w-9 h-9 rounded-xl bg-parchment-100 dark:bg-parchment-800 hover:bg-gold-500/20 text-stone-500 dark:text-stone-400 hover:text-emerald-900 dark:hover:text-gold-400 flex items-center justify-center transition-colors"
+                                    title="Copia testo arabo e traduzione">
+                                    <i class="fa-regular fa-copy text-sm"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Testo Originale in Arabo (RTL) -->
+                        <div class="mb-6 text-right" dir="rtl">
+                            <p class="arabic-text font-arabic leading-[2.2] text-emerald-950 dark:text-parchment-50 transition-all" style="font-size: ${state.arabicFontSize}px;">
+                                ${ayah.arabic}
+                                <span class="ayah-end-symbol" title="Versetto ${ayah.numberInSurah}">${toArabicDigits(ayah.numberInSurah)}</span>
+                            </p>
+                        </div>
+
+                        <!-- Traduzione in Italiano (Hamza Roberto Piccardo) -->
+                        <div class="text-left">
+                            <p class="text-base sm:text-lg leading-relaxed text-stone-700 dark:text-stone-300 font-normal">
+                                ${ayah.italian}
+                            </p>
+                        </div>
+                    </article>
+                `;
+            }).join('');
+
+            if (isPartialOffline && verses.length < ALL_SURAHS_META.find(s => s.number === state.currentSurahNumber).ayahs) {
+                html += `
+                    <div class="p-4 rounded-xl bg-amber-500/10 border border-amber-500/30 text-center text-sm text-amber-800 dark:text-amber-300">
+                        <i class="fa-solid fa-circle-info mr-1.5"></i>
+                        Stai visualizzando un'anteprima offline dei primi versetti. Connettiti a internet per caricare l'intera Sura.
+                    </div>
+                `;
+            }
+
+            container.innerHTML = html;
+        }
+
+        function navigateSurah(delta) {
+            const nextNum = state.currentSurahNumber + delta;
+            if (nextNum >= 1 && nextNum <= 114) {
+                loadSurah(nextNum);
+            }
+        }
+
+        /**
+         * REGOLAZIONE DIMENSIONE FONT ARABO
+         */
+        function changeFontSize(delta) {
+            state.arabicFontSize = Math.min(54, Math.max(22, state.arabicFontSize + delta));
+            document.querySelectorAll('.arabic-text').forEach(el => {
+                el.style.fontSize = `${state.arabicFontSize}px`;
+            });
+        }
+
+        /**
+         * SISTEMA AUDIO RECITAZIONE (MISHARY RASHID ALAFASY)
+         */
+        function setupAudioListeners() {
+            audioEl.addEventListener('timeupdate', () => {
+                if (audioEl.duration) {
+                    const percent = (audioEl.currentTime / audioEl.duration) * 100;
+                    document.getElementById('audio-progress-bar').style.width = `${percent}%`;
+                }
+            });
+
+            audioEl.addEventListener('ended', () => {
+                if (state.audio.autoPlayNext && state.audio.currentAyahIndex + 1 < state.currentVerses.length) {
+                    playAyah(state.audio.currentAyahIndex + 1);
+                } else {
+                    stopAudio();
+                }
+            });
+
+            audioEl.addEventListener('error', () => {
+                showToast("Impossibile riprodurre l'audio per questo versetto. Verifica la connessione.", "error");
+                updatePlayerUIState(false);
+            });
+        }
+
+        function playAyah(index) {
+            if (index < 0 || index >= state.currentVerses.length) return;
+
+            const ayah = state.currentVerses[index];
+            const meta = ALL_SURAHS_META.find(s => s.number === state.currentSurahNumber);
+
+            state.audio.currentAyahIndex = index;
+            state.audio.isPlaying = true;
+
+            // Mostra barra player
+            document.getElementById('audio-player-bar').classList.remove('translate-y-full');
+            document.getElementById('player-title').textContent = `${meta.name} • Versetto ${ayah.numberInSurah} di ${state.currentVerses.length}`;
+
+            // Evidenziazione visiva e auto-scroll
+            highlightActiveAyah(ayah.numberInSurah, index);
+
+            // Avvia riproduzione
+            audioEl.src = ayah.audio;
+            audioEl.play().then(() => {
+                updatePlayerUIState(true);
+            }).catch(err => {
+                console.warn("Riproduzione audio bloccata o errore:", err);
+                updatePlayerUIState(false);
+            });
+        }
+
+        function togglePlayFullSurah() {
+            if (state.audio.isPlaying) {
+                toggleAudioPlayPause();
+            } else {
+                const startIndex = state.audio.currentAyahIndex >= 0 ? state.audio.currentAyahIndex : 0;
+                playAyah(startIndex);
+            }
+        }
+
+        function toggleAudioPlayPause() {
+            if (!audioEl.src) {
+                playAyah(0);
+                return;
+            }
+
+            if (audioEl.paused) {
+                audioEl.play();
+                state.audio.isPlaying = true;
+                updatePlayerUIState(true);
+            } else {
+                audioEl.pause();
+                state.audio.isPlaying = false;
+                updatePlayerUIState(false);
+            }
+        }
+
+        function playNextAyah() {
+            if (state.audio.currentAyahIndex + 1 < state.currentVerses.length) {
+                playAyah(state.audio.currentAyahIndex + 1);
+            }
+        }
+
+        function playPreviousAyah() {
+            if (state.audio.currentAyahIndex - 1 >= 0) {
+                playAyah(state.audio.currentAyahIndex - 1);
+            }
+        }
+
+        function stopAudio() {
+            audioEl.pause();
+            audioEl.currentTime = 0;
+            state.audio.isPlaying = false;
+            state.audio.currentAyahIndex = -1;
+            document.getElementById('audio-player-bar').classList.add('translate-y-full');
+            document.getElementById('audio-progress-bar').style.width = '0%';
+            updatePlayerUIState(false);
+            clearAyahHighlights();
+        }
+
+        function toggleAutoPlay() {
+            state.audio.autoPlayNext = !state.audio.autoPlayNext;
+            const btn = document.getElementById('auto-play-toggle');
+            if (state.audio.autoPlayNext) {
+                btn.className = "px-2.5 py-1 rounded-lg text-xs font-medium bg-gold-500/20 text-gold-300 border border-gold-500/40 flex items-center gap-1.5 transition-colors";
+                btn.innerHTML = `<i class="fa-solid fa-repeat"></i> <span>Continuo: ON</span>`;
+            } else {
+                btn.className = "px-2.5 py-1 rounded-lg text-xs font-medium bg-white/5 text-parchment-200/60 border border-white/10 flex items-center gap-1.5 transition-colors";
+                btn.innerHTML = `<i class="fa-solid fa-repeat"></i> <span>Continuo: OFF</span>`;
+            }
+        }
+
+        function updatePlayerUIState(isPlaying) {
+            const playerIcon = document.getElementById('player-play-icon');
+            const headerBtnIcon = document.getElementById('play-surah-icon');
+            const headerBtnText = document.getElementById('play-surah-text');
+            const waveBars = document.querySelectorAll('#audio-wave span');
+
+            if (isPlaying) {
+                playerIcon.className = 'fa-solid fa-pause text-base';
+                headerBtnIcon.className = 'fa-solid fa-pause';
+                headerBtnText.textContent = 'Pausa';
+                waveBars[0].classList.add('animate-wave-1');
+                waveBars[1].classList.add('animate-wave-2');
+                waveBars[2].classList.add('animate-wave-3');
+            } else {
+                playerIcon.className = 'fa-solid fa-play text-base ml-0.5';
+                headerBtnIcon.className = 'fa-solid fa-play';
+                headerBtnText.textContent = 'Ascolta Sura';
+                waveBars.forEach(b => b.classList.remove('animate-wave-1', 'animate-wave-2', 'animate-wave-3'));
+            }
+        }
+
+        function highlightActiveAyah(numberInSurah, index) {
+            clearAyahHighlights();
+            
+            const card = document.getElementById(`ayah-card-${numberInSurah}`);
+            const btn = document.getElementById(`btn-play-ayah-${index}`);
+
+            if (card) {
+                card.classList.add('border-gold-500', 'bg-gold-500/5', 'dark:bg-gold-500/10', 'shadow-md');
+                card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+            if (btn) {
+                btn.innerHTML = `<i class="fa-solid fa-volume-high text-xs animate-pulse"></i>`;
+                btn.classList.add('bg-emerald-900', 'text-gold-400', 'dark:bg-gold-500', 'dark:text-emerald-950');
+            }
+        }
+
+        function clearAyahHighlights() {
+            document.querySelectorAll('.ayah-card').forEach(el => {
+                el.classList.remove('border-gold-500', 'bg-gold-500/5', 'dark:bg-gold-500/10', 'shadow-md');
+            });
+            state.currentVerses.forEach((_, idx) => {
+                const btn = document.getElementById(`btn-play-ayah-${idx}`);
+                if (btn) {
+                    btn.innerHTML = `<i class="fa-solid fa-play text-xs"></i>`;
+                    btn.classList.remove('bg-emerald-900', 'text-gold-400', 'dark:bg-gold-500', 'dark:text-emerald-950');
+                }
+            });
+        }
+
+        /**
+         * GESTIONE SEGNALIBRI (LOCALSTORAGE)
+         */
+        function checkBookmark(surahNum, ayahNum) {
+            return state.bookmarks.some(b => b.surah === surahNum && b.ayah === ayahNum);
+        }
+
+        function toggleBookmark(surahNum, ayahNum) {
+            const existingIndex = state.bookmarks.findIndex(b => b.surah === surahNum && b.ayah === ayahNum);
+            const meta = ALL_SURAHS_META.find(s => s.number === surahNum);
+            const verseObj = state.currentVerses.find(v => v.numberInSurah === ayahNum);
+
+            if (existingIndex > -1) {
+                state.bookmarks.splice(existingIndex, 1);
+                showToast(`Segnalibro rimosso (${meta.name} ${surahNum}:${ayahNum})`);
+            } else {
+                state.bookmarks.unshift({
+                    surah: surahNum,
+                    surahName: meta.name,
+                    ayah: ayahNum,
+                    snippet: verseObj ? verseObj.italian.substring(0, 75) + '...' : '',
+                    timestamp: Date.now()
+                });
+                showToast(`Versetto salvato nei segnalibri (${meta.name} ${surahNum}:${ayahNum})`);
+            }
+
+            localStorage.setItem('quran_bookmarks_it', JSON.stringify(state.bookmarks));
+            updateBookmarksUI();
+
+            // Aggiorna icona pulsante nella card
+            const btn = document.getElementById(`btn-bookmark-${ayahNum}`);
+            if (btn) {
+                const isNowBookmarked = existingIndex === -1;
+                btn.className = `w-9 h-9 rounded-xl bg-parchment-100 dark:bg-parchment-800 hover:bg-gold-500/20 flex items-center justify-center transition-colors ${isNowBookmarked ? 'text-gold-500' : 'text-stone-400 dark:text-stone-500'}`;
+                btn.innerHTML = `<i class="${isNowBookmarked ? 'fa-solid' : 'fa-regular'} fa-bookmark text-sm"></i>`;
+            }
+        }
+
+        function updateBookmarksUI() {
+            document.getElementById('bookmark-count').textContent = state.bookmarks.length;
+            const container = document.getElementById('bookmarks-list');
+
+            if (state.bookmarks.length === 0) {
+                container.innerHTML = `
+                    <div class="p-8 text-center text-parchment-200/60">
+                        <i class="fa-regular fa-bookmark text-3xl text-gold-400/50 mb-3"></i>
+                        <p class="text-sm font-medium text-parchment-100">Nessun segnalibro</p>
+                        <p class="text-xs mt-1">Clicca sull'icona segnalibro accanto a qualsiasi versetto per salvarlo qui.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = state.bookmarks.map(b => `
+                <div class="p-3 rounded-xl bg-emerald-950/60 dark:bg-parchment-950 border border-gold-500/20 hover:border-gold-400 transition-all group">
+                    <div class="flex items-center justify-between mb-1.5">
+                        <button onclick="goToBookmark(${b.surah}, ${b.ayah})" class="text-left font-semibold text-sm text-gold-400 hover:underline flex items-center gap-1.5">
+                            <i class="fa-solid fa-bookmark text-xs"></i>
+                            <span>${b.surahName} (${b.surah}:${b.ayah})</span>
+                        </button>
+                        <button onclick="removeBookmarkFromList(${b.surah}, ${b.ayah})" class="text-parchment-200/40 hover:text-red-400 p-1 transition-colors" title="Elimina">
+                            <i class="fa-solid fa-trash-can text-xs"></i>
+                        </button>
+                    </div>
+                    <p onclick="goToBookmark(${b.surah}, ${b.ayah})" class="text-xs text-parchment-200/80 cursor-pointer line-clamp-2">
+                        "${b.snippet}"
+                    </p>
+                </div>
+            `).join('');
+        }
+
+        function goToBookmark(surahNum, ayahNum) {
+            if (window.innerWidth < 1024) toggleSidebar();
+            if (state.currentSurahNumber === surahNum) {
+                const targetEl = document.getElementById(`ayah-card-${ayahNum}`);
+                if (targetEl) {
+                    targetEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    targetEl.classList.add('ring-2', 'ring-gold-400');
+                    setTimeout(() => targetEl.classList.remove('ring-2', 'ring-gold-400'), 2500);
+                }
+            } else {
+                loadSurah(surahNum, ayahNum);
+            }
+        }
+
+        function removeBookmarkFromList(surahNum, ayahNum) {
+            state.bookmarks = state.bookmarks.filter(b => !(b.surah === surahNum && b.ayah === ayahNum));
+            localStorage.setItem('quran_bookmarks_it', JSON.stringify(state.bookmarks));
+            updateBookmarksUI();
+            if (state.currentSurahNumber === surahNum) {
+                const btn = document.getElementById(`btn-bookmark-${ayahNum}`);
+                if (btn) {
+                    btn.className = "w-9 h-9 rounded-xl bg-parchment-100 dark:bg-parchment-800 hover:bg-gold-500/20 flex items-center justify-center transition-colors text-stone-400 dark:text-stone-500";
+                    btn.innerHTML = `<i class="fa-regular fa-bookmark text-sm"></i>`;
+                }
+            }
+        }
+
+        /**
+         * COPIA VERSETTO NEGLI APPUNTI (COMPATIBILE CON IFRAME)
+         */
+        function copyAyah(index) {
+            const ayah = state.currentVerses[index];
+            const meta = ALL_SURAHS_META.find(s => s.number === state.currentSurahNumber);
+            const textToCopy = `${ayah.arabic}\n\n"${ayah.italian}"\n— Sacro Corano, ${meta.name} (${state.currentSurahNumber}:${ayah.numberInSurah})`;
+
+            const textarea = document.createElement('textarea');
+            textarea.value = textToCopy;
+            textarea.style.position = 'fixed';
+            textarea.style.opacity = '0';
+            document.body.appendChild(textarea);
+            textarea.select();
+            
+            try {
+                document.execCommand('copy');
+                showToast(`Versetto ${state.currentSurahNumber}:${ayah.numberInSurah} copiato negli appunti!`);
+            } catch (err) {
+                showToast("Impossibile copiare il testo.", "error");
+            }
+            
+            document.body.removeChild(textarea);
+        }
+
+        /**
+         * SISTEMA NOTIFICHE TOAST
+         */
+        function showToast(message, type = 'success') {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            
+            const icon = type === 'error' ? 'fa-circle-exclamation text-red-400' : 
+                         type === 'warning' ? 'fa-triangle-exclamation text-amber-400' : 
+                         'fa-circle-check text-gold-400';
+
+            toast.className = "pointer-events-auto flex items-center gap-2.5 px-4 py-3 rounded-xl bg-emerald-950 dark:bg-parchment-800 text-parchment-50 text-xs sm:text-sm font-medium border border-gold-500/40 shadow-xl transform transition-all duration-300 translate-x-full opacity-0";
+            toast.innerHTML = `<i class="fa-solid ${icon}"></i><span>${message}</span>`;
+
+            container.appendChild(toast);
+
+            requestAnimationFrame(() => {
+                toast.classList.remove('translate-x-full', 'opacity-0');
+            });
+
+            setTimeout(() => {
+                toast.classList.add('translate-x-full', 'opacity-0');
+                setTimeout(() => toast.remove(), 300);
+            }, 3200);
+        }
+    </script>
+</body>
+</html>
